@@ -1,0 +1,13 @@
+ persons: 
+   - name: Rudolf
+     track: person.rudolf_kotulan
+     picture_path: 'images/persons/rudolf.png'
+   - name: Šárka
+     track: person.sarka
+     picture_path: 'images/persons/sarka.png'
+   - name: Rudík
+     track: person.rudik
+     picture_path: 'images/persons/rudik.jpg'
+   - name: Lojzík
+     track: person.lojzik
+     picture_path: 'images/persons/lojzik.png'     

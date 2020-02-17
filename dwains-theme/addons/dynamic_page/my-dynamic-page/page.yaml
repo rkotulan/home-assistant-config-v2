@@ -1,0 +1,76 @@
+# dwains_theme
+
+- type: custom:mod-card
+  style: |
+    ha-card {
+      padding: 0px 8px 20px 8px;
+    }
+  card:
+    type: vertical-stack
+    cards:
+      - type: markdown
+        style: |
+          ha-card {
+            box-shadow: none;
+            background: none;
+            color: var(--dwains-theme-grey);
+            font-weight: bold;
+            font-size: 14px;
+          }
+          .markdown {
+            padding: 0px 16px 0px 16px;
+          }        
+        content: "System"
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: HA      
+        icon: fas:home
+        entity: sensor.ha_version                 
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: CPU      
+        icon: fas:microchip
+        entity: sensor.cpu_temperature        
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: Memory (use / free)
+        icon: fas:memory
+        entity: sensor.hw_memory          
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: Disk (use / free)
+        icon: mdi:harddisk
+        entity: sensor.hw_disk
+      - type: markdown
+        style: |
+          ha-card {
+            box-shadow: none;
+            background: none;
+            color: var(--dwains-theme-grey);
+            font-weight: bold;
+            font-size: 14px;
+          }
+          .markdown {
+            padding: 0px 16px 0px 16px;
+          }
+        content: "Internet"
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: Ping
+        entity: sensor.speedtest_ping
+        icon: fas:history
+        color: var(--dwains-theme-accent)
+        show_last_changed: false
+        show_state: false
+        show_label: true        
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: Download
+        entity: sensor.speedtest_download
+        icon: fas:cloud-download-alt
+      - type: custom:button-card
+        template: entity_dynamic_card
+        name: Upload
+        entity: sensor.speedtest_upload
+        icon: fas:cloud-upload-alt
+            

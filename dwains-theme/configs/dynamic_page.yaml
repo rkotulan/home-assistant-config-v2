@@ -1,0 +1,5 @@
+dynamic_page:
+  addon:
+    name: System
+    icon: fas:info-circle
+    path: 'dwains-theme/addons/dynamic_page/my-dynamic-page/page.yaml'

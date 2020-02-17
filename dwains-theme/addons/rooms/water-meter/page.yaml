@@ -1,0 +1,22 @@
+- type: custom:mini-graph-card
+  entities:
+   - sensor.water_consumption
+  name: Water total   
+  hours_to_show: 144
+  icon: mdi:water
+
+- type: custom:mini-graph-card
+  entities:
+   - sensor.daily_water_consumption
+  name: Water daily   
+  hours_to_show: 144
+  aggregate_func: max
+  group_by: date
+  show:
+    graph: bar
+
+# - type: custom:mini-graph-card
+#   entities:
+#     - sensor.daily_water_consumption
+#   name: Water daily   
+#   hours_to_show: 168    

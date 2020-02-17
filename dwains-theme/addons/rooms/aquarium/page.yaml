@@ -1,0 +1,12 @@
+- type: custom:button-card
+  template: room_light
+  name: Aquarium
+  entity: switch.blitzwolf_shp6_04_relay
+  icon: fas:lightbulb
+
+- type: custom:mini-graph-card
+  entities:
+   - sensor.living_room_aquarium_temperature
+  name: Aquarium temperature 
+  hours_to_show: 144
+  icon: mdi:water

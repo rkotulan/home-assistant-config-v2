@@ -1,0 +1,38 @@
+rooms:
+  - name: Our Home
+    icon: fas:home   
+    temperature: sensor.multi_sensor_3
+    humidity: sensor.multi_sensor    
+    device: group.water_consumption
+    addons:
+      - name: Water meter
+        icon: mdi:water-pump
+        path: 'dwains-theme/addons/rooms/water-meter/page.yaml'
+  - name: Living room
+    icon: fas:couch
+    temperature: sensor.living_room_temperature
+    media_player: group.living_room_tv
+    addons:
+      - name: Aquarium
+        icon: mdi:fish
+        label: 'Test'
+        path: 'dwains-theme/addons/rooms/aquarium/page.yaml'
+  - name: Office
+    icon: fas:laptop-code
+    temperature: sensor.office_temperature
+    humidity: sensor.office_humidity
+    light: group.office_lights
+    motion: binary_sensor.motion_sensor
+    climate: climate.office_ac
+  - name: Bedroom
+    icon: fas:bed
+    temperature: sensor.bedroom_temperature
+    humidity: sensor.bedroom_humidity
+  - name: Kidsroom
+    icon: fas:bed
+    temperature: sensor.kidsroom_temperature
+    humidity: sensor.kidsroom_humidity    
+  - name: Bathroom
+    icon: fas:bath
+    temperature: sensor.bathroom_temperature
+    humidity: sensor.bathroom_humidity    

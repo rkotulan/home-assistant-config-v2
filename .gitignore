@@ -9,6 +9,8 @@
 !esphome
 !custom_component
 !logging
+!dwains-theme/
+!dwains-theme/**/
 
 # Ignore folders.
 .storage
