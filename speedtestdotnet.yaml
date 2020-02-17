@@ -1,0 +1,13 @@
+####################################################
+#          INTERNET PERFORMANCE METRICS            #
+####################################################
+
+#https://www.home-assistant.io/integrations/speedtestdotnet/
+
+  server_id: 1363
+  scan_interval:
+    minutes: 30
+  monitored_conditions:
+    - ping
+    - download
+    - upload

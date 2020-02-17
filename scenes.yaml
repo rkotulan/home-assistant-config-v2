@@ -1,0 +1,16 @@
+- id: '1581849864530'
+  name: Good night
+  entities:
+    light.night_light:
+      friendly_name: Night Light
+      is_deconz_group: false
+      state: 'off'
+      supported_features: 41
+    light.sts_01_relay_1:
+      friendly_name: sts_01_relay_1
+      state: 'off'
+      supported_features: 8
+    light.sts_01_relay_2:
+      friendly_name: sts_01_relay_2
+      state: 'off'
+      supported_features: 8

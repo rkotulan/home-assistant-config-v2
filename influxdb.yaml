@@ -1,0 +1,53 @@
+####################################################
+#                   INFLUX DB                      #
+####################################################
+
+  host: a0d7b954-influxdb
+  database: homeassistant
+  username: !secret influxdb_username
+  password: !secret influxdb_password
+  include:
+    entities:  
+        - sensor.blitzwolf_shp6_01_voltage
+        - sensor.blitzwolf_shp6_01_wattage
+        - sensor.blitzwolf_shp6_01_amperage
+        - sensor.blitzwolf_shp6_02_voltage        
+        - sensor.blitzwolf_shp6_02_wattage
+        - sensor.blitzwolf_shp6_02_amperage
+        - sensor.blitzwolf_shp6_03_voltage        
+        - sensor.blitzwolf_shp6_03_wattage
+        - sensor.blitzwolf_shp6_03_amperage
+        - sensor.blitzwolf_shp6_04_voltage
+        - sensor.blitzwolf_shp6_04_wattage
+        - sensor.blitzwolf_shp6_04_amperage
+        - sensor.blitzwolf_shp6_05_voltage
+        - sensor.blitzwolf_shp6_05_wattage
+        - sensor.blitzwolf_shp6_05_amperage
+        - binary_sensor.motion_sensor
+        - sensor.disk_free
+        - sensor.disk_use
+        - sensor.cpu_temperature
+        - sensor.kidsroom_humidity
+        - sensor.kidsroom_temperature
+        - sensor.living_room_aquarium_temperature
+        - sensor.living_room_temperature
+        - sensor.memory_free
+        - sensor.memory_use
+        - sensor.multi_sensor
+        - sensor.multi_sensor_2
+        - sensor.multi_sensor_3
+        - sensor.office_humidity
+        - sensor.office_temperature
+        - sensor.processor_use
+        - sensor.speedtest_download
+        - sensor.speedtest_ping
+        - sensor.speedtest_upload
+        - device_tracker.life360_rudolf_kotulan
+        - device_tracker.life360_sarka
+        - device_tracker.life360_rudik
+        - device_tracker.life360_lojzik
+        - sensor.water_consumption
+        - sensor.daily_water_consumption
+        - sensor.monthly_water_consumption
+        - sensor.bedroom_humidity
+        - sensor.bedroom_temperature

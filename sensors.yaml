@@ -1,0 +1,62 @@
+#https://home-assistant.io/components/sensor/
+
+####################################################
+#              HA SERVER METRICS                   #
+####################################################
+
+#https://home-assistant.io/components/sensor.systemmonitor/
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use
+        arg: /
+      - type: disk_free
+        arg: /
+      - type: memory_use
+      - type: memory_free
+      - type: processor_use     
+
+#https://www.home-assistant.io/components/sensor.command_line/
+
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+####################################################
+#                HA VERSION INFO                   #
+####################################################
+
+#https://home-assistant.io/components/sensor.command_line/
+
+  -  platform: command_line
+     name: Installed version
+     command: "head -5 /config/.HA_VERSION"
+
+#https://www.home-assistant.io/components/sensor.rest/
+
+  - platform: rest
+    resource: https://pypi.python.org/pypi/homeassistant/json
+    name: Latest version
+    value_template: "{{ value_json.info.version }}"
+    scan_interval: 3600
+
+#https://www.home-assistant.io/integrations/template/    
+  - platform: template
+    sensors:
+      hw_memory:
+        friendly_name: "System memory"
+        unit_of_measurement: 'MiB'
+        value_template: "{{ states('sensor.memory_use') + ' / ' + states('sensor.memory_free') }}"
+        icon_template: mdi:memory    
+      hw_disk:
+        friendly_name: "System disk"
+        unit_of_measurement: 'GiB'
+        value_template: "{{ states('sensor.disk_use') + ' / ' + states('sensor.disk_free') }}"
+        icon_template: mdi:harddisk   
+      ha_version:
+        friendly_name: "HA version"
+        unit_of_measurement: 'version'
+        value_template: "{{ states('sensor.installed_version') + ' / ' + states('sensor.latest_version') }}"
+        icon_template: mdi:code-branch   

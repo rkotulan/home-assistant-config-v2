@@ -1,0 +1,13 @@
+####################################################
+#                    SMART IR                      #
+####################################################
+
+#https://github.com/smartHomeHub/SmartIR
+  - platform: smartir
+    name: Office AC
+    unique_id: office_ac
+    device_code: 1062
+    controller_data: 10.0.0.42
+    temperature_sensor: sensor.office_temperature
+    humidity_sensor: sensor.office_humidity
+    power_sensor: binary_sensor.office_ac_power

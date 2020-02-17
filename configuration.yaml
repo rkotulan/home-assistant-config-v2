@@ -1,0 +1,86 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+#Copy from here#
+#Start of dwains-theme necesary code#
+homeassistant:
+  # If you want to customize entries with friendly_name or custom icon.
+  # Read more here: https://www.home-assistant.io/docs/configuration/customizing-devices/
+  # Uncomment line below and create file customize.yaml or edit it
+  # customize: !include customize.yaml
+
+  # Below is link to packages folder for Dwains Theme
+  # Check out user-package-sample in your downloaded folder for an example
+  # to create a own package folder
+  packages: !include_dir_named packages/ # Comment this whole line if you want to disable Dwains Theme
+
+  # If you had any important strings before in homeassistant: place them back here below
+  # 
+#End of dwains-theme necesary code#
+#Copy till here# 
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+####################################################
+#      LINKS TO INDIVUAL CONFIGURATION FILES       #
+####################################################
+
+#https://home-assistant.io/docs/configuration/splitting_configuration/
+
+influxdb: !include influxdb.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include sensors.yaml
+switch: !include switches.yaml
+climate: !include climates.yaml
+speedtestdotnet: !include speedtestdotnet.yaml
+
+# ########################################
+# ###              LOGGING             ###
+# ########################################
+
+recorder: !include logging/recorder.yaml
+history: !include logging/history.yaml
+logbook: !include logging/logbook.yaml
+logger: !include logging/logger.yaml
+
+####################################################
+#                 Utility Meter                    #
+####################################################
+
+#https://www.home-assistant.io/integrations/utility_meter/
+
+utility_meter:
+  hourly_water_consumption:
+    source: sensor.water_consumption
+    cycle: hourly
+  daily_water_consumption:
+    source: sensor.water_consumption
+    cycle: daily
+  monthly_water_consumption:
+    source: sensor.water_consumption
+    cycle: monthly    
+
+
+####################################################
+#                    SMART IR                      #
+####################################################
+
+#https://github.com/smartHomeHub/SmartIR
+
+smartir:
+
+####################################################
+#               Generic IP Camera                  #
+####################################################
+
+#https://www.home-assistant.io/integrations/generic_ip_camera
+# camera:
+#   - platform: generic
+#     still_image_url: http://10.0.0.141:8080/photoaf.jpg
+#     verify_ssl: false
+#     name: watermeter

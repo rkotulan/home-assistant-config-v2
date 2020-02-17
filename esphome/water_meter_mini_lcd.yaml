@@ -1,0 +1,91 @@
+esphome:
+  name: water_meter_mini_lcd
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - enbra_wmbus_08.h
+  libraries:
+    - chrono
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Water Meter Mini"
+    password: "YsmMvvPlnY3U"
+
+captive_portal:
+
+# Enable logging
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+uart:
+  id: uart_bus
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 9600
+  
+i2c:
+  sda: D2
+  scl: D1
+  scan: True  
+  
+sensor:
+#- platform: enbra_wmbus_08
+#  : 000A06A4
+# ? uart: uart_bus
+#  sensors:
+#    id: water_consumption_2
+#    name: "Water consumption 2"
+#    unit_of_measurement: l
+#    accuracy_decimals: 0
+
+- platform: bme280
+  temperature:
+    name: "BME Temperature"
+    oversampling: 16x
+    id: bme_temp
+  pressure:
+    name: "BME Pressure"
+    id: bme_press
+  humidity:
+    name: "BME Humidity"
+    id: bme_humid
+  address: 0x76
+  update_interval: 60s
+
+- platform: custom
+  lambda: |-
+    auto enbra_sensor = new EnbraWmbus08(id(uart_bus), "000A06A4");
+    App.register_component(enbra_sensor);
+    return {enbra_sensor};
+  sensors:
+    id: water_consumption
+    name: "Water consumption"
+    unit_of_measurement: l
+    accuracy_decimals: 0
+    
+font:
+  - file: "PTM55FT.ttf"
+    id: font_pt
+    size: 12
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    address: 0x3C
+    lambda: |-
+      it.printf(0, 15, id(font_pt), "Spotreba vody");   
+      it.printf(0, 35, id(font_pt), "%.0f litru", id(water_consumption).state);
+      it.printf(0, 55, id(font_pt), "Teplota: %.1f°C", id(bme_temp).state);

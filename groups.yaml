@@ -1,0 +1,17 @@
+office_lights:
+   name: Office Lights
+   entities:
+       - light.night_light
+       - light.sts_01_relay_1
+       - light.sts_01_relay_2
+water_consumption:
+    name: Water consumption
+    entities: 
+        - sensor.water_consumption       
+        - sensor.daily_water_consumption
+        - sensor.monthly_water_consumption
+living_room_tv:
+    name: Living room TV
+    entities:
+        - media_player.living_room_tv
+        - media_player.samsung_ue55h7000

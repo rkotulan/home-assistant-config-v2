@@ -1,0 +1,10 @@
+####################################################
+#                    SMART IR                      #
+####################################################
+
+# https://github.com/smartHomeHub/SmartIR
+# https://www.home-assistant.io/integrations/broadlink/#switch
+
+  - platform: broadlink
+    host: 10.0.0.42
+    mac: '78:0F:77:63:91:97'

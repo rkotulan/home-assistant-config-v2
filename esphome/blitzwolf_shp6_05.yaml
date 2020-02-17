@@ -1,0 +1,134 @@
+# Blitzwolf SHP6 15A Power Monitoring Plug
+# https://templates.blakadder.com/blitzwolf_SHP6-15A.html
+substitutions:
+  plug_name: blitzwolf_shp6_05
+  # Higher value gives lower watt readout
+  current_res: '0.00122'
+  # Lower value gives lower voltage readout
+  voltage_div: '768'
+
+esphome:
+  name: ${plug_name}
+  platform: ESP8266
+  board: esp8285
+  on_boot:
+    priority: -10
+    then:
+    # on affter boot
+    - switch.toggle: relay
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+logger:
+
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+binary_sensor:
+  - platform: gpio
+    internal: true
+    pin:
+      number: GPIO13
+      inverted: True
+    on_press:
+      - switch.toggle: relay
+    name: "${plug_name}_button"
+        
+switch:
+- platform: gpio
+  name: "${plug_name}_Relay"
+  id: relay
+  pin: GPIO15
+  on_turn_on:
+    - switch.turn_on: "${plug_name}_LED_Blue"
+  on_turn_off:
+    - switch.turn_off: "${plug_name}_LED_Blue"
+    - switch.turn_off: "${plug_name}_LED_Red"
+- platform: gpio
+  internal: true
+  name: "${plug_name}_LED_Blue"
+  id: "${plug_name}_LED_Blue"
+  pin: GPIO2
+  inverted: True
+- platform: gpio
+  name: "${plug_name}_LED_Red"
+  internal: true
+  id: "${plug_name}_LED_Red"
+  pin: GPIO0
+  inverted: True
+sensor:
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: True
+    cf_pin: GPIO05
+    cf1_pin: GPIO04
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+    current:
+      name: "${plug_name}_Amperage"
+      unit_of_measurement: 'A'
+      accuracy_decimals: 3
+      filters:
+        # Map from sensor -> measured value
+        - calibrate_linear:
+            - 0.0 -> 0.013
+            - 1.66215 -> 1.645
+            - 2.93647 -> 2.920
+            - 9.33577 -> 9.261
+            
+        # Make everything below 0.01A appear as just 0A.
+        # Furthermore it corrects 0.013A for the power usage of the plug.
+        - lambda: if (x < (0.01 - 0.013)) return 0; else return (x - 0.013);
+    voltage:
+      name: "${plug_name}_Voltage"
+      unit_of_measurement: 'V'
+    power:
+      name: "${plug_name}_Wattage"
+      unit_of_measurement: 'W'
+      id: "${plug_name}_Wattage"
+      on_value_range:
+        - above: 2.0
+          then:
+            - switch.turn_on: "${plug_name}_LED_Red"
+        - below: 2.0
+          then:
+            - switch.turn_off: "${plug_name}_LED_Red"
+      filters:
+        # Map from sensor -> measured value
+        - calibrate_linear:
+            - 0.0 -> 1.14
+            - 695.17603 -> 352.5
+            - 1354.34692 -> 686.3
+            - 4212.60010 -> 2123.0
+           
+        # Make everything below 2W appear as just 0W.
+        # Furthermore it corrects 1.14W for the power usage of the plug.
+        - lambda: if (x < (2 + 1.14)) return 0; else return (x - 1.14);            
+    change_mode_every: 3
+    update_interval: 3s
+  - platform: total_daily_energy
+    name: "${plug_name}_Total Daily Energy"
+    power_id: "${plug_name}_Wattage"
+    filters:
+        # Multiplication factor from W to kW is 0.001
+        - multiply: 0.001
+    unit_of_measurement: kWh
+
+# Extra sensor to keep track of plug uptime
+  - platform: uptime
+    name: '${plug_name}_Uptime'
+    unit_of_measurement: days
+    update_interval: 300s
+    filters:
+      - multiply: 0.000011574

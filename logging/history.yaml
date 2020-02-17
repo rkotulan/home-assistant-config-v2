@@ -1,0 +1,39 @@
+  exclude:
+    domains:
+      # - automation
+      - alert
+      - camera
+      - media_player
+      - sun
+      - calendar
+      # - sensor
+      - group
+      - switch
+      - script
+      - zwave
+    entities:
+        - sun.sun
+        - binary_sensor.updater
+        - switch.akvarium_temperature_restart
+        - sensor.latest_version
+        - media_player.living_room_tv
+        - switch.temperature_bridge_restart
+        - sensor.installed_version
+        - sensor.akvarium_switch_uptime
+        - sensor.blitzwolf_shp6_01_uptime_sensor
+        - sensor.blitzwolf_shp6_02_uptime_sensor
+        - sensor.blitzwolf_shp6_03_uptime_sensor
+        - sensor.blitzwolf_shp6_04_uptime_sensor
+        - sensor.blitzwolf_shp6_05_uptime_sensor
+        - binary_sensor.blitzwolf_shp6_01_button
+        - binary_sensor.blitzwolf_shp6_02_button
+        - binary_sensor.blitzwolf_shp6_03_button
+        - binary_sensor.blitzwolf_shp6_04_button
+        - binary_sensor.blitzwolf_shp6_05_button
+  include:
+    domains:
+      - device_tracker
+
+    entities:
+      #- sensor.dining_room_isabellas_iphone_x_bt
+      - device_tracker.sm_g975f

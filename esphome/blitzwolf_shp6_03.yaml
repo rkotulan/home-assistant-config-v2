@@ -1,0 +1,151 @@
+# BlitzWolf BW-SHP6 10A Power Monitoring Plug
+# https://templates.blakadder.com/blitzwolf_SHP6.html
+substitutions:
+  plug_name: blitzwolf_shp6_03
+  # Higher value gives lower watt readout
+  current_res: '0.00130'
+  # Lower value gives lower voltage readout
+  voltage_div: '963'
+
+esphome:
+  name: ${plug_name}
+  platform: ESP8266
+  board: esp8285
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+logger:
+
+api:
+  reboot_timeout: 24h
+  
+ota:
+
+web_server:
+  port: 80
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+binary_sensor:
+  - platform: gpio
+    internal: true
+    pin:
+      number: GPIO13
+      inverted: True
+    on_press:
+      - switch.toggle: relay
+    name: "${plug_name}_button"
+        
+switch:
+- platform: gpio
+  name: "${plug_name}_Relay"
+  id: relay
+  pin: GPIO15
+  restore_mode: ALWAYS_ON
+  on_turn_on:
+    - switch.turn_on: "${plug_name}_LED_Blue"
+  on_turn_off:
+    - switch.turn_off: "${plug_name}_LED_Blue"
+    - switch.turn_off: "${plug_name}_LED_Red"
+- platform: gpio
+  internal: true
+  name: "${plug_name}_LED_Blue"
+  id: "${plug_name}_LED_Blue"
+  pin: GPIO2
+  inverted: True
+  restore_mode: ALWAYS_ON
+- platform: gpio
+  name: "${plug_name}_LED_Red"
+  internal: true
+  id: "${plug_name}_LED_Red"
+  pin: GPIO0
+  inverted: True
+- platform: restart
+  name: "${plug_name}_restart"
+sensor:
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: True
+    cf_pin: GPIO05
+    cf1_pin: GPIO14
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+    
+    current:
+      name: "${plug_name}_Amperage"
+      unit_of_measurement: 'A'
+      accuracy_decimals: 3
+      filters:
+        # Map 0.0 (from sensor) to 0.0 (true value)
+        - calibrate_linear:
+            - 0.0 -> 0.013
+            - 1.69357 -> 1.615
+            - 2.32866 -> 2.509
+            - 3.65455 -> 2.860
+            - 5.30355 -> 5.056
+            - 6.85971 -> 6.519
+            - 9.55234 -> 9.079
+            
+        # Make everything below 0.01A appear as just 0A.
+        # Furthermore it corrects 0.013A for the power usage of the plug.
+        - lambda: if (x < (0.01 - 0.013)) return 0; else return (x - 0.013);
+    voltage:
+      name: "${plug_name}_Voltage"
+      unit_of_measurement: 'V'
+      accuracy_decimals: 1
+      filters:
+        # Map 0.0 (from sensor) to 0.0 (true value)
+        - calibrate_linear:
+            - 0.0 -> 0.0
+            - 225.24147 -> 226.9
+            - 228.58913 -> 228.9
+            - 230.03979 -> 231.1
+            - 231.76939 -> 232.5
+            
+    power:
+      name: "${plug_name}_Wattage"
+      unit_of_measurement: 'W'
+      id: "${plug_name}_Wattage"
+      on_value_range:
+        - above: 2.0
+          then:
+            - switch.turn_on: "${plug_name}_LED_Red"
+        - below: 2.0
+          then:
+            - switch.turn_off: "${plug_name}_LED_Red"
+      filters:
+        # Map 0.0 (from sensor) to 0.0 (true value)
+        - calibrate_linear:
+            - 0.0 -> 1.15
+            - 699.62793 -> 343.8
+            - 1074.42859 -> 528.4
+            - 1339.50500 -> 658.6
+            - 1374.26904 -> 676.0
+            - 2303.12305 -> 1134
+            - 3002.75073 -> 1473
+            - 4166.26270 -> 2044
+        # Make everything below 2W appear as just 0W.
+        # Furthermore it corrects 1.15W for the power usage of the plug.
+        - lambda: if (x < (2 + 1.15)) return 0; else return (x - 1.15);
+    change_mode_every: 3
+    update_interval: 3s
+  - platform: total_daily_energy
+    name: "${plug_name}_Total Daily Energy"
+    power_id: "${plug_name}_Wattage"
+    filters:
+        # Multiplication factor from W to kW is 0.001
+        - multiply: 0.001
+    unit_of_measurement: kWh
+
+# Extra sensor to keep track of plug uptime
+  - platform: uptime
+    name: '${plug_name}_Uptime'
+    unit_of_measurement: days
+    update_interval: 300s
+    filters:
+      - multiply: 0.000011574

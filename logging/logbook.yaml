@@ -1,0 +1,9 @@
+
+exclude:
+    domains:
+      - alert
+      - camera
+      - media_player
+      - sun
+      - calendar
+      - group
