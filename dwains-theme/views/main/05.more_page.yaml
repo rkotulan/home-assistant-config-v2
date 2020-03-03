@@ -28,7 +28,7 @@
             cards:
               - type: custom:button-card
                 template: more_page_main
-                icon: '{{ _d_t_icons.more_page_house_info|default('mdi:home') }}'
+                icon: '{{ _d_t_icons.more_page_house_information|default('mdi:home') }}'
                 name: {{ _d_t_trans.more_page.house_info }}
                 tap_action: 
                   action: navigate
@@ -72,7 +72,7 @@
                 name: {{ more_page["name"] }}
                 tap_action: 
                   action: navigate
-                  navigation_path: more_page_addon_{{ more_page["name"]|lower|replace(" ", "_") }}
+                  navigation_path: more_page_addon_{{ more_page["name"]|lower|replace("'", "_")|replace(" ", "_") }}
               {% endfor %}
               - type: custom:button-card
                 color_type: blank-card

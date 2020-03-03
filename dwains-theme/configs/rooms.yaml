@@ -10,7 +10,8 @@ rooms:
         path: 'dwains-theme/addons/rooms/water-meter/page.yaml'
   - name: Living room
     icon: fas:couch
-    temperature: sensor.living_room_temperature
+    temperature: sensor.livingroom_temperature
+    humidity: sensor.livingroom_humidity
     media_player: group.living_room_tv
     addons:
       - name: Aquarium
