@@ -75,6 +75,17 @@ sensor:
     name: "Water consumption"
     unit_of_measurement: l
     accuracy_decimals: 0
+
+# - platform: custom
+#   lambda: |-
+#     auto enbra_sensor_2 = new EnbraWmbus08(id(uart_bus), "0009F664");
+#     App.register_component(enbra_sensor_2);
+#     return {enbra_sensor_2};
+#   sensors:
+#     id: water_consumption_fialova
+#     name: "Water consumption Fialova"
+#     unit_of_measurement: l
+#     accuracy_decimals: 0    
     
 font:
   - file: "PTM55FT.ttf"
